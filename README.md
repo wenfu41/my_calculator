@@ -1,16 +1,265 @@
-# my_calculator
+# 程序员计算器 (Programmer Calculator)
 
-A new Flutter project.
+一个功能强大的 Flutter 跨平台程序员计算器应用，支持多进制转换和运算。
 
-## Getting Started
+## 📱 项目简介
 
-This project is a starting point for a Flutter application.
+这是一个专为程序员设计的计算器应用，不仅支持基本的算术运算，还提供了多种进制（十进制、二进制、八进制、十六进制）之间的无缝转换和运算功能。应用采用现代化的深色主题设计，界面简洁美观，操作流畅便捷。
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ 核心功能
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 1. 多进制支持
+- **十进制 (DEC)**: 标准的十进制运算，支持小数和百分比
+- **二进制 (BIN)**: 仅支持 0-1 数字，适用于位运算
+- **八进制 (OCT)**: 支持 0-7 数字，常用于文件权限表示
+- **十六进制 (HEX)**: 支持 0-9 和 A-F，常用于内存地址和颜色值
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 2. 智能进制转换
+- 实时进制切换：在不同进制之间自由切换，数值自动转换
+- 保持运算状态：切换进制时保留当前计算状态
+- 自动格式化：根据当前进制自动格式化显示结果
+
+### 3. 基本运算功能
+- **四则运算**: 加法 (+)、减法 (-)、乘法 (*)、除法 (/)
+- **百分比计算**: 支持百分比运算（仅十进制）
+- **小数运算**: 支持小数点运算（仅十进制）
+- **连续运算**: 支持链式计算，自动保存中间结果
+
+### 4. 智能按键管理
+- **动态按键启用**: 根据当前进制自动启用/禁用相应按键
+  - 二进制模式：仅启用 0、1
+  - 八进制模式：启用 0-7
+  - 十六进制模式：启用 0-9 和 A-F
+- **视觉反馈**: 禁用的按键显示为灰色，提供清晰的视觉提示
+
+### 5. 用户友好的界面
+- **表达式显示**: 实时显示当前计算表达式
+- **大字体结果**: 清晰显示计算结果
+- **进制指示器**: 顶部显示当前选中的进制模式
+- **错误处理**: 除零等错误操作会显示 "Error" 提示
+
+## 🛠️ 技术实现
+
+### 核心技术栈
+- **Flutter SDK**: ^3.9.2
+- **Dart 语言**: 使用最新的 Dart 特性
+- **Material Design**: 采用 Material Design 深色主题
+
+### 关键技术点
+
+#### 1. 进制转换算法
+```dart
+// 从指定进制转换为十进制
+int _parseFromBase(String value, NumberBase base) {
+  return int.parse(value, radix: getRadix(base));
+}
+
+// 从十进制转换为指定进制
+String _formatToBase(int value, NumberBase base) {
+  return value.toRadixString(getRadix(base));
+}
+```
+
+#### 2. 状态管理
+- 使用 `StatefulWidget` 管理计算器状态
+- 实时更新显示和按键状态
+- 保持运算符和操作数的状态
+
+#### 3. 动态 UI 渲染
+- 根据进制模式动态显示十六进制字母按键
+- 智能启用/禁用按键
+- 响应式布局适配不同屏幕尺寸
+
+#### 4. 错误处理
+- 除零检测
+- 进制转换异常捕获
+- 输入验证
+
+## 📸 应用图标
+
+项目使用自定义应用图标 (`04.png`)，通过 `flutter_launcher_icons` 插件自动生成各平台图标：
+- Android 自适应图标
+- iOS 应用图标
+- 黑色背景适配
+
+## 🚀 安装与运行
+
+### 环境要求
+- Flutter SDK 3.9.2 或更高版本
+- Dart SDK 3.9.2 或更高版本
+- Android Studio / VS Code（推荐）
+- Android 设备或模拟器 / iOS 设备或模拟器
+
+### 安装步骤
+
+1. **克隆项目**
+```bash
+git clone <repository-url>
+cd my_calculator
+```
+
+2. **安装依赖**
+```bash
+flutter pub get
+```
+
+3. **生成应用图标**（可选）
+```bash
+flutter pub run flutter_launcher_icons
+```
+
+4. **运行应用**
+```bash
+# 在调试模式下运行
+flutter run
+
+# 在发布模式下运行
+flutter run --release
+```
+
+5. **构建 APK**（Android）
+```bash
+# 构建调试版本
+flutter build apk --debug
+
+# 构建发布版本
+flutter build apk --release
+```
+
+6. **构建 iOS 应用**（需要 macOS）
+```bash
+flutter build ios --release
+```
+
+## 📖 使用说明
+
+### 基本操作
+
+1. **选择进制模式**
+   - 点击顶部的 DEC、BIN、OCT、HEX 按钮切换进制
+   - 当前选中的进制会以蓝色高亮显示
+
+2. **输入数字**
+   - 点击数字按键输入数值
+   - 灰色按键表示在当前进制下不可用
+
+3. **执行运算**
+   - 输入第一个数字
+   - 点击运算符（+、-、*、/）
+   - 输入第二个数字
+   - 点击 "=" 查看结果
+
+4. **清除操作**
+   - **C**: 清除所有内容，重置计算器
+   - **DEL**: 删除最后一位数字
+
+5. **特殊功能**
+   - **%**: 百分比计算（仅十进制）
+   - **.**: 小数点（仅十进制）
+   - **00**: 快速输入两个零
+
+### 进制转换示例
+
+**示例 1: 十进制转二进制**
+1. 在 DEC 模式下输入 `15`
+2. 切换到 BIN 模式
+3. 显示结果: `1111`
+
+**示例 2: 十六进制运算**
+1. 切换到 HEX 模式
+2. 输入 `A` + `5`
+3. 点击 `=`
+4. 显示结果: `F` (十进制的 15)
+
+**示例 3: 跨进制运算**
+1. 在 DEC 模式下输入 `10`
+2. 点击 `+`
+3. 切换到 HEX 模式输入 `A` (十进制的 10)
+4. 点击 `=`
+5. 结果显示为 `14` (十六进制，十进制的 20)
+
+## 🎨 界面设计
+
+### 颜色方案
+- **背景色**: 纯黑 (#000000)
+- **数字按键**: 深灰色 (#424242)
+- **运算符按键**: 橙色
+- **功能按键**: 浅灰色
+- **进制选择器**: 蓝色（选中）/ 深灰色（未选中）
+
+### 布局结构
+```
+┌─────────────────────────────┐
+│  Programmer Calculator      │  <- AppBar
+├─────────────────────────────┤
+│ [DEC] [BIN] [OCT] [HEX]     │  <- 进制选择器
+├─────────────────────────────┤
+│                             │
+│         表达式显示区          │  <- 显示计算表达式
+│         结果显示区            │  <- 显示计算结果
+│                             │
+├─────────────────────────────┤
+│  [C]  [DEL]  [%]   [/]      │
+│  [A]  [B]   [C]   [*]       │  <- 仅十六进制
+│  [D]  [E]   [F]   [-]       │  <- 仅十六进制
+│  [7]  [8]   [9]   [*]       │
+│  [4]  [5]   [6]   [-]       │
+│  [1]  [2]   [3]   [+]       │
+│  [00] [0]   [.]   [=]       │
+└─────────────────────────────┘
+```
+
+## 📂 项目结构
+
+```
+my_calculator/
+├── android/              # Android 平台配置
+├── ios/                  # iOS 平台配置
+├── lib/
+│   └── main.dart        # 主应用代码
+├── test/                # 测试文件
+├── 04.png              # 应用图标
+├── pubspec.yaml        # 项目配置文件
+└── README.md           # 项目说明文档
+```
+
+## 🔧 依赖包
+
+### 主要依赖
+- `flutter`: Flutter SDK
+- `cupertino_icons`: iOS 风格图标
+
+### 开发依赖
+- `flutter_test`: Flutter 测试框架
+- `flutter_lints`: 代码规范检查
+- `flutter_launcher_icons`: 应用图标生成器
+
+## 🐛 已知问题
+
+目前项目运行稳定，暂无已知重大问题。
+
+## 🔮 未来计划
+
+- [ ] 添加位运算功能（AND, OR, XOR, NOT）
+- [ ] 支持更多进制（如三进制、五进制）
+- [ ] 添加历史记录功能
+- [ ] 支持主题切换（浅色/深色）
+- [ ] 添加科学计算器模式
+- [ ] 支持表达式编辑
+- [ ] 添加单位转换功能
+
+## 📄 开源协议
+
+本项目采用 MIT 协议开源。
+
+## 👨‍💻 开发者
+
+如有问题或建议，欢迎提交 Issue 或 Pull Request。
+
+## 🙏 致谢
+
+感谢 Flutter 团队提供的优秀跨平台框架，使得开发如此便捷高效。
+
+---
+
+**最后更新时间**: 2025-11-28
