@@ -124,7 +124,7 @@ class _CalculatorHomeState extends State<CalculatorHome> {
     }
 
     // 十六进制字母按钮
-    if (RegExp(r'^[A-F]$').hasMatch(buttonText)) {
+    if (RegExp(r'^[A-F]$').hasMatch(buttonText) || buttonText == "HEX_C") {
       return _currentBase == NumberBase.hexadecimal;
     }
 
@@ -153,6 +153,8 @@ class _CalculatorHomeState extends State<CalculatorHome> {
         _handleDecimal();
       } else if (buttonText == "=") {
         _calculateResult();
+      } else if (buttonText == "HEX_C") {
+        _handleNumber("C");
       } else {
         _handleNumber(buttonText);
       }
@@ -337,6 +339,12 @@ class _CalculatorHomeState extends State<CalculatorHome> {
   }) {
     bool enabled = _isButtonEnabled(buttonText);
 
+    // 处理按钮显示文本
+    String displayText = buttonText;
+    if (buttonText == "HEX_C") {
+      displayText = "C";
+    }
+
     return Expanded(
       child: Container(
         margin: const EdgeInsets.all(6.0),
@@ -351,7 +359,7 @@ class _CalculatorHomeState extends State<CalculatorHome> {
               elevation: enabled ? 2 : 0,
             ),
             child: Text(
-              buttonText,
+              displayText,
               style: TextStyle(
                 fontSize: isSmallText ? 20.0 : 28.0,
                 fontWeight: FontWeight.w500,
@@ -485,7 +493,7 @@ class _CalculatorHomeState extends State<CalculatorHome> {
                         children: [
                           buildButton("A", Colors.grey[850]!, Colors.white),
                           buildButton("B", Colors.grey[850]!, Colors.white),
-                          buildButton("C", Colors.grey[850]!, Colors.white),
+                          buildButton("HEX_C", Colors.grey[850]!, Colors.white),
                           buildButton("*", Colors.orange, Colors.white),
                         ],
                       ),
